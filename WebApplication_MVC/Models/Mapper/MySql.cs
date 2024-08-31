@@ -21,7 +21,7 @@ public class MySql
                     {
                         if (reader.Read())
                         {
-                            longUrl = reader["longUrl"].ToString();
+                            longUrl = reader["longUrl"].ToString() ?? string.Empty;
                         }
                     }
                 }
@@ -33,5 +33,29 @@ public class MySql
             Console.WriteLine("An error occurred: " + ex.Message);
         }
         return longUrl;
+    }
+
+    public static void InsertUrlMapping(String shortUrl, String longUrl)
+    {
+        try
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string sql = "INSERT INTO url_map (shortUrl, longUrl) VALUES (@shortUrl, @longUrl)";
+                using (MySqlCommand command = new MySqlCommand(sql.ToString(), connection))
+                {
+                    command.Parameters.AddWithValue("@shortUrl", shortUrl);
+                    command.Parameters.AddWithValue("@longUrl", longUrl);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // 记录异常或抛出
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
+        
     }
 }

@@ -2,7 +2,8 @@ namespace WebApplication_MVC.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using Models.Service;
-using System.Data;
+using Models.Util;
+
 public class ShortUrlController  : Controller
 {
     // readonly是只读
@@ -26,29 +27,17 @@ public class ShortUrlController  : Controller
         return "redirect:/";
     }
 
-    [HttpPost]
-    public IActionResult Create(string longUrl)
+    [HttpPost]//不用get是因为把一个长链作为参数放url不好，太长了
+    public string CreateShortUrl(HttpContext context)
     {
-        // Generate a unique short URL
-        string shortUrl = GenerateShortUrl();
-
-        // Save the long URL and short URL to the database
-        SaveUrlToDatabase(longUrl, shortUrl);
-
-        // Redirect the user to the short URL
-        return Redirect(shortUrl);
+        string longUrl = context.Request.Form["longUrl"].ToString();
+        // 读取请求体中的数据
+        if (Util.checkLongUrl(longUrl)==false)
+        {
+            return "错误的长链接格式";
+        }
+        string shortUrl = _urlService.createShortUrl(longUrl);
+        return shortUrl;
     }
-
-    private string GenerateShortUrl()
-    {
-        // Generate a unique short URL
-        // TODO: Implement a unique short URL generation algorithm
-        return "abc123";
-    }
-
-    private void SaveUrlToDatabase(string longUrl, string shortUrl)
-    {
-        // Save the long URL and short URL to the database
-        // TODO: Implement database connection and save the data
-    }
+    
 }

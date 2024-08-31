@@ -50,6 +50,10 @@
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.8.0, )"
+            },
+            "System.Data.HashFunction.MurmurHash": {
+              "target": "Package",
+              "version": "[2.0.0, )"
             }
           },
           "imports": [

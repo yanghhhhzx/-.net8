@@ -4,6 +4,6 @@ namespace WebApplication_MVC.Models.Service;
 public interface UrlService
 {
     String getLongUrlByShortUrl(String shortURL);
-    String saveUrlMap(String shortURL, String longURL, String originalURL);
+    String createShortUrl(String longURL);
     void updateUrlViews(String shortURL);
 }
